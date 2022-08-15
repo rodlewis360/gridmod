@@ -1,0 +1,127 @@
+To import and use gridmod, use the following code (replace PATH with the path to the gridmod folder on your computer):
+import sys
+sys.path.append(PATH)
+import gridmod
+
+
+gridmod is a Python module used for creating and handling 2-dimensional grids with Grid objects, GridSpot objects, Area objects, and associated functions.
+
+
+Grid createGrid(sizex, sizey, value = ' ')
+	sizex - integer representing the size of the grid horizontally.
+	sizey - integer representing the size of the grid vertically.
+	value - default value for all gridspots within the grid.
+
+	Used to create a grid with the given dimensions.  Because the constructor does not create the gridspots for the grid, this function is the recommended constructor.  Returns an object of Grid type with gridspots representing the ranges of sizex and sizey.  The gridspots will have value value (defaults to empty).
+
+
+
+class GridSpot
+
+	CONSTRUCTOR: GridSpot(x, y, value)
+		x - x position of the gridspot (usually connected to a grid).  Using createGrid(), the far left gridspots on a grid will have x = 0, with x increasing to the right.
+		y - y position of the gridspot (usually connected to a grid).  Using createGrid(), the top gridspots on a grid will have y = 0, with y increasing to the right.
+
+	The constructor for GridSpot is not recommended for use as it is handled in createGrid() and is assigned to a Grid
+
+
+	GridSpot GridSpot.left(grid)
+		grid - the grid where the function will check for a gridspot left of the gridspot.  Usually the grid in which the gridspot calling the function is housed.
+
+		Returns a GridSpot object with x value 1 less than the calling GridSpot and y value equal to the calling GridSpot.  If no such GridSpot is found in Grid, returns an empty GridSpot that is not connected to grid with x value 1 less than the calling GridSpot and y value equal to the calling GridSpot.
+
+
+	GridSpot GridSpot.right(grid)
+		grid - the grid where the function will check for a gridspot right of the gridspot.  Usually the grid in which the gridspot calling the function is housed.
+
+		Returns a GridSpot object with x value 1 more than the calling GridSpot and y value equal to the calling GridSpot.  If no such GridSpot is found in Grid, returns an empty GridSpot that is not connected to grid with x value 1 more than the calling GridSpot and y value equal to the calling GridSpot.
+	
+
+	GridSpot GridSpot.up(grid)
+		grid - the grid where the function will check for a gridspot up of the gridspot.  Usually the grid in which the gridspot calling the function is housed.
+
+		Returns a GridSpot object with x value equal to the calling GridSpot and y value 1 more than the calling GridSpot.  If no such GridSpot is found in Grid, returns an empty GridSpot that is not connected to grid with x value equal to the calling GridSpot and y value 1 more than the calling GridSpot.
+
+
+	GridSpot GridSpot.down(grid)
+		grid - the grid where the function will check for a gridspot down of the gridspot.  Usually the grid in which the gridspot calling the function is housed.
+
+		Returns a GridSpot object with x value equal to the calling GridSpot and y value 1 more than the calling GridSpot.  If no such GridSpot is found in Grid, returns an empty GridSpot that is not connected to grid with x value equal to the calling GridSpot and y value 1 less than the calling GridSpot.
+
+
+	GridSpot.changeValue(newvalue)
+		newvalue - value to change the GridSpot to.
+
+		Changes the value of the calling GridSpot.
+
+
+	GridSpot.convertToVisual()
+
+		Returns a string with the value of the GridSpot enclosed in brackets.  Used for showing and printing the grid.  The function Grid.printSelf() is recommended instead as it handles all of the gridspots and printing them in a grid format.
+
+
+	GridSpot.convertToVisualClean()
+
+		Returns a string with the value of the GridSpot, plus a blank space for Grid printing.  Used for showing and printing the grid without lines.  The function Grid.printSelfClean() is recommended instead as it handles all of the gridspots and printing them in a grid format.
+
+
+
+class Area
+
+	CONSTRUCTOR: Area(areaspots)
+		areaspots - the GridSpots in the Area.
+
+		The constructor for an Area is not recommended for use as it is handled in Grid.getArea().
+
+	
+	Area.convertTo(value)
+		value - the new value for all the GridSpots in the Area.
+
+		Overides the value of all the GridSpots in the Area to value.
+
+
+class Grid
+	
+	CONSTRUCTOR: Grid(gridspots, sizex, sizey)
+		gridspots - the GridSpots inside the Grid.
+		sizex - the horizontal size of the Grid.
+		sizey - the vertical size of the Grid.
+
+		The constructor for a Grid is not recommended for use as it is handled in createGrid().
+
+
+	GridSpot Grid.getspot(x,y)
+		x - the x value of the gridspot to find
+		y - the y value of the gridspot to find
+
+		Returns a GridSpot from the calling Grid with x value x and y value y.  If no such GridSpot is found within the Grid, then it returns an empty GridSpot that is not connected to the Grid with x value x and y value y.
+
+	
+	Grid.convertToVisual()
+
+		Returns a dict of all of the GridSpots in the grid converted to their visual formats.  Dict is in format {y:listOfConvertedGridSpots}
+
+
+	Grid.printSelf()
+
+		Prints the calling Grid with brackets representing each GridSpot.  The value of each GridSpot is printed.
+
+
+	Grid.printSelfClean()
+
+		Prints the calling Grid with spaces between each GridSpot.  The value of each GridSpot is printed.
+
+
+	Grid.convertTo(value)
+		value - the value to convert all the GridSpots in the Grid to.
+
+		Overides the value of all the GridSpots in the Grid to value.
+
+	
+	Area Grid.getarea(x1, y1, x2, y2)
+		x1 - The x value of the top left point of the area
+		y1 - The y value of the top left point of the area
+		x2 - The x value of the bottom right point of the area
+		y2 - The y value of the bottom right point of the area
+
+		Returns a rectangular Area consisting of all the GridSpots from (x1, y1) to (x2, y2).
